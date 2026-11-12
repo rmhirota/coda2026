@@ -4059,5 +4059,86 @@ Limites oficiais direto no R ou Python</div></div></div></div></div></section>
 <section class="deck-slide" id="24" aria-roledescription="slide" aria-label="Slide 24 of 24" data-document-role="page" data-label="Obrigada!" data-speaker-notes="Abrir para perguntas. Reforçar onde está o material (script e slides) e convidar a turma a refazer o exercício com outro recorte: Unidades de Conservação, municípios do Pará ou outro ano."><div class="deck-fit"><div class="deck-scaler"><div style="width: 1920px; height: 1080px; position: relative; background: rgb(16, 38, 31); overflow: clip; contain: paint;" class="slide" data-canvas-width="1920" data-canvas-height="1080"><div data-frame-id="e0-1bz7laa" style="position: absolute; inset: 0px; box-sizing: border-box;"><div data-node-path="" style="display: flex; flex-direction: column; align-items: stretch; justify-content: space-between; gap: 0px; width: 100%; height: 100%; padding: 128px; box-sizing: border-box;"><div data-text-path="0" data-node-path="0" style="font-family: &quot;IBM Plex Sans&quot;, Arial, ui-sans-serif, system-ui, sans-serif; font-size: 24px; font-weight: 600; line-height: 1.4; color: rgb(240, 138, 87); margin: 0px; white-space: pre-wrap; overflow-wrap: break-word; text-wrap-style: pretty; min-width: 0px; min-height: 0px; letter-spacing: 4px; text-transform: uppercase; overflow-y: visible;">Geojornalismo com R</div><div data-node-path="1" style="display: flex; flex-direction: column; align-items: stretch; gap: 32px; min-width: 0px; min-height: 0px;"><div data-text-path="1.0" data-node-path="1.0" role="heading" aria-level="1" style="font-family: Fraunces, Georgia, ui-serif, Georgia, serif; font-size: 120px; font-weight: 600; line-height: 1.05; color: rgb(243, 239, 230); margin: 0px; white-space: pre-wrap; overflow-wrap: break-word; text-wrap-style: pretty; min-width: 0px; min-height: 0px; overflow-y: visible;">Obrigada!</div></div><div data-node-path="2" style="display: flex; flex-direction: row; align-items: stretch; gap: 64px; min-width: 0px; min-height: 0px;"><div data-text-path="2.0" data-node-path="2.0" style="font-family: &quot;IBM Plex Sans&quot;, Arial, ui-sans-serif, system-ui, sans-serif; font-size: 32px; font-weight: 400; line-height: 1.4; color: rgb(243, 239, 230); margin: 0px; white-space: pre-wrap; overflow-wrap: break-word; text-wrap-style: pretty; min-width: 0px; min-height: 0px; overflow-y: visible;">Renata Hirota</div><div data-text-path="2.1" data-node-path="2.1" style="font-family: &quot;IBM Plex Sans&quot;, Arial, ui-sans-serif, system-ui, sans-serif; font-size: 32px; font-weight: 400; line-height: 1.4; color: rgb(185, 204, 194); margin: 0px; white-space: pre-wrap; overflow-wrap: break-word; text-wrap-style: pretty; min-width: 0px; min-height: 0px; overflow-y: visible;">hirota.dev</div><div data-text-path="2.2" data-node-path="2.2" style="font-family: &quot;IBM Plex Sans&quot;, Arial, ui-sans-serif, system-ui, sans-serif; font-size: 32px; font-weight: 400; line-height: 1.4; color: rgb(185, 204, 194); margin: 0px; white-space: pre-wrap; overflow-wrap: break-word; text-wrap-style: pretty; min-width: 0px; min-height: 0px; overflow-y: visible;">Material: hirota.dev/coda2026</div></div></div></div></div></div></div></section>
 </main>
 <div class="deck-pager" aria-hidden="true"></div>
+<script>
+// Notas do apresentador: tecla S abre uma janela com as notas do slide atual.
+// A janela acompanha o slide (lido do #N da URL) e repassa as setas para o deck.
+(function () {
+  var slides = Array.prototype.slice.call(document.querySelectorAll(".deck-slide"));
+  var win = null, last = -1, inicio = Date.now();
+
+  function atual() {
+    var m = /^#(\d+)$/.exec(window.location.hash);
+    var i = m ? Number(m[1]) - 1 : 0;
+    return Math.max(0, Math.min(slides.length - 1, i));
+  }
+
+  function el(tag, cls, txt) {
+    var e = win.document.createElement(tag);
+    if (cls) e.className = cls;
+    if (txt !== undefined) e.textContent = txt;
+    return e;
+  }
+
+  function render(force) {
+    if (!win || win.closed) return;
+    var i = atual();
+    var d = win.document;
+    var seg = Math.floor((Date.now() - inicio) / 1000);
+    var t = d.getElementById("tempo");
+    if (t) t.textContent = String(Math.floor(seg / 60)).padStart(2, "0") + ":" + String(seg % 60).padStart(2, "0");
+    if (i === last && !force) return;
+    last = i;
+    var s = slides[i], prox = slides[i + 1];
+    d.getElementById("pos").textContent = "Slide " + (i + 1) + " / " + slides.length;
+    d.getElementById("titulo").textContent = s.dataset.label || "";
+    d.getElementById("notas").textContent = s.dataset.speakerNotes || "(sem notas)";
+    d.getElementById("prox").textContent = prox ? "Próximo: " + (prox.dataset.label || "") : "Último slide";
+  }
+
+  function abrir() {
+    if (win && !win.closed) { win.focus(); return; }
+    win = window.open("", "deck-notas", "width=900,height=600");
+    if (!win) { alert("Permita pop-ups desta página para abrir as notas."); return; }
+    var d = win.document;
+    d.title = "Notas do apresentador";
+    d.body.innerHTML = "";
+    var css = el("style", null,
+      "body{margin:0;padding:32px;background:#10261f;color:#f3efe6;font:20px/1.5 'IBM Plex Sans',Arial,sans-serif}" +
+      "header{display:flex;justify-content:space-between;color:#b9ccc2;font-size:18px}" +
+      "#tempo{cursor:pointer;font-variant-numeric:tabular-nums}" +
+      "h1{font:600 32px/1.2 Fraunces,Georgia,serif;margin:16px 0 24px}" +
+      "#notas{font-size:26px;white-space:pre-wrap}" +
+      "#prox{margin-top:32px;color:#f08a57;font-size:18px}" +
+      "footer{margin-top:24px;color:#b9ccc2;font-size:14px}");
+    d.head.appendChild(css);
+    var h = el("header");
+    h.appendChild(el("span", null)).id = "pos";
+    var tempo = el("span", null, "00:00");
+    tempo.id = "tempo";
+    tempo.title = "Clique para zerar";
+    tempo.onclick = function () { inicio = Date.now(); render(true); };
+    h.appendChild(tempo);
+    d.body.appendChild(h);
+    d.body.appendChild(el("h1")).id = "titulo";
+    d.body.appendChild(el("div")).id = "notas";
+    d.body.appendChild(el("div")).id = "prox";
+    d.body.appendChild(el("footer", null, "Setas / espaço navegam os slides daqui também · clique no relógio para zerar"));
+    // Repassa as teclas de navegação para o deck
+    win.addEventListener("keydown", function (e) {
+      if (/^(Arrow\w+|Page\w+|Home|End| )$/.test(e.key)) {
+        e.preventDefault();
+        window.dispatchEvent(new KeyboardEvent("keydown", { key: e.key, shiftKey: e.shiftKey }));
+      }
+    });
+    render(true);
+  }
+
+  window.addEventListener("keydown", function (e) {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.key === "s" || e.key === "S") { e.preventDefault(); abrir(); }
+  });
+  setInterval(function () { render(false); }, 250);
+})();
+</script>
 </body>
 </html>
